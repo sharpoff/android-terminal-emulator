@@ -17,38 +17,65 @@ import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 
+
 public class Terminal {
+    // Sequences codes
+    private static final int NONE = 0;
+    private static final int ESC = 1;
+    private static final int CSI_START = '[';
+    private static final int DCS_START = 'P';
+    private static final int OSC_START = ']';
 
+    private int currentSequence = NONE;
+    private boolean continueSequence = false;
+    private int[] sequencesArgs = new int[10];
+
+    public boolean isCtrlChecked = false;
+
+    private int row = 0;
+    private int column = 0;
+    private String terminalBuffer = "";
+
+    private static final String LOG_TAG = "DebugTag";
     private FileDescriptor terminalFd = null;
-    private TextView terminalOut = null;
+    private TextView terminalTextView = null;
 
-    Terminal(TextView termOut) {
+    Terminal(TextView textView) {
         // creating pty
         int pid = createPty();
-        Log.d("DebugTag", "pid: " + pid);
+        Log.d(LOG_TAG, "PID: " + pid);
         terminalFd = createTerminalFd(pid);
-        terminalOut = termOut;
+        terminalTextView = textView;
 
         // thread that is reading from terminal file descriptor and adding it to terminalOut TextView
         new Thread() {
             @Override
             public void run() {
-                byte[] bytes = new byte[4096];
                 try (InputStream inputStream = new FileInputStream(terminalFd)) {
                     while(true) {
+                        byte[] bytes = new byte[4096];
                         int read = inputStream.read(bytes);
                         //Log.d("DebugTag", "Read bytes " + read);
                         if (read <= 0) {
+                            Log.d(LOG_TAG, "Closing pid");
                             close(pid);
                             break;
                         } else {
-                            terminalOut.append(new String(bytes, StandardCharsets.UTF_8).replaceAll("\0", ""));
-                            Log.d("DebugTag", "message:\n" + new String(bytes, StandardCharsets.UTF_8).replaceAll("\0", ""));
+                            // parse bytes and add to output
+                            for (byte b : bytes) {
+                                parseByte(b);
+                            }
+                            // TODO: after successful parse it can be removed, but for now that's fine
+                            terminalBuffer = new String(bytes, StandardCharsets.UTF_8).replaceAll("\0", "");
+
+                            terminalTextView.append(terminalBuffer);
+                            column = terminalBuffer.length();
+                            row = terminalTextView.getLineCount();
+                            Log.d(LOG_TAG, "Message:\n" + new String(bytes, StandardCharsets.UTF_8).replaceAll("\0", ""));
+                            Log.d(LOG_TAG, "Row: " + row + ", Column: " + column);
                         }
                     }
-                } catch (IOException e) {
-                    Log.d("DebugTag", "IOException");
-                }
+                } catch (IOException e) {}
             }
         }.start();
     }
@@ -62,9 +89,8 @@ public class Terminal {
             fdField.setAccessible(true);
             fdField.set(fd, pid);
         } catch (Exception e) {
-            Log.e("DebugTag", e.toString());
+            Log.e(LOG_TAG, e.toString());
         }
-
         return fd;
     }
 
@@ -75,5 +101,44 @@ public class Terminal {
         } catch (Exception e) {}
     }
 
+    void parseByte(byte b) {
+        switch (b) {
+            case 7: // BEL
+                break;
+            case 8: // BS
+                break;
+            case 9: // HT
+                break;
+            case 10: // LF
+                break;
+            case 11: // VT
+                break;
+            case 12: // FF
+                break;
+            case 13: // CR
+                break;
+            case 27: // ESC
+                continueSequence = true;
+                currentSequence = ESC;
+            case 127: // DEL
+                break;
+            default:
+                continueSequence = false;
+                switch (currentSequence) {
+                    case CSI_START: // CSI
+                        switch (b) {
 
+                        }
+                        break;
+                    case DCS_START: // DCS
+                        currentSequence = NONE;
+                        break;
+                    case OSC_START: // OSC
+                        currentSequence = NONE;
+                        break;
+                }
+                if (!continueSequence) currentSequence = NONE;
+                break;
+        }
+    }
 }

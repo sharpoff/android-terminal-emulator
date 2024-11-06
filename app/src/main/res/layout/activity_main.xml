@@ -15,7 +15,105 @@
         android:layout_height="0dp"
         android:textColor="#FFFFFF"
         android:layout_weight="1"
+        android:typeface="monospace"
+        android:textSize="12sp"
         />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#222222">
+        <TableRow>
+            <ToggleButton
+                android:id="@+id/btnCtrl"
+                android:layout_width="90dp"
+                android:layout_height="48dp"
+                android:backgroundTint="#ff444444"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
+                android:textColor="#FFFFFF"
+                android:textOn="Ctrl"
+                android:textOff="Ctrl"
+                app:cornerRadius="5dp" />
+            <ToggleButton
+                android:id="@+id/btnAlt"
+                android:layout_width="90dp"
+                android:layout_height="48dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:backgroundTint="#ff444444"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
+                android:textColor="#FFFFFF"
+                android:textOn="Alt"
+                android:textOff="Alt"
+                app:cornerRadius="5dp" />
+            <Button
+                android:id="@+id/btnUp"
+                android:layout_width="90dp"
+                android:layout_height="48dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:backgroundTint="#ff444444"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
+                android:textColor="#FFFFFF"
+                android:text="Up"
+                app:cornerRadius="5dp" />
+        </TableRow>
+        <TableRow>
+            <Button
+                android:id="@+id/btnTab"
+                android:layout_width="90dp"
+                android:layout_height="48dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:backgroundTint="#ff444444"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
+                android:textColor="#FFFFFF"
+                android:text="Tab"
+                app:cornerRadius="5dp" />
+            <Button
+                android:id="@+id/btnLeft"
+                android:layout_width="90dp"
+                android:layout_height="48dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:backgroundTint="#ff444444"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
+                android:textColor="#FFFFFF"
+                android:text="Left"
+                app:cornerRadius="5dp" />
+            <Button
+                android:id="@+id/btnDown"
+                android:layout_width="90dp"
+                android:layout_height="48dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:backgroundTint="#ff444444"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
+                android:textColor="#FFFFFF"
+                android:text="Down"
+                app:cornerRadius="5dp" />
+            <Button
+                android:id="@+id/btnRight"
+                android:layout_width="90dp"
+                android:layout_height="48dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:backgroundTint="#ff444444"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
+                android:textColor="#FFFFFF"
+                android:text="Right"
+                app:cornerRadius="5dp" />
+        </TableRow>
+    </TableLayout>
 
     <EditText
         android:id="@+id/terminal_in"
@@ -26,6 +124,6 @@
         android:hint="command"
         android:textColorHint="#FFFFFF"
         android:inputType="text"
-        />
+        android:typeface="monospace" />
 
 </LinearLayout>

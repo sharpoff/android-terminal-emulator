@@ -2,10 +2,13 @@ package com.example.terminal;
 
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,8 +16,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.nio.charset.StandardCharsets;
+
 public class MainActivity extends AppCompatActivity {
     Terminal terminal = null;
+    private static final String LOG_TAG = "DebugTag";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,23 +33,36 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        TextView terminalOut = findViewById(R.id.terminal_out);
-        terminalOut.setMovementMethod(new ScrollingMovementMethod()); // set scroll
-        EditText terminalIn = findViewById(R.id.terminal_in);
+        TextView terminalTextView = findViewById(R.id.terminal_out);
+        EditText terminalEditText = findViewById(R.id.terminal_in);
+        terminal = new Terminal(terminalTextView);
 
-        terminal = new Terminal(terminalOut);
+        terminalTextView.setMovementMethod(new ScrollingMovementMethod()); // set scroll
 
-        // on enter write what you typed to the terminal and add '\n', so it can be interpreted
-        terminalIn.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        terminalEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 boolean handled = false;
                 if (i == EditorInfo.IME_ACTION_GO) {
-                    //Perform your Actions here.
-                    //Log.d("DebugTag", "command: " + terminalIn.getText().toString() + '\n');
-                    terminal.writeBytes((terminalIn.getText().toString() + '\n').getBytes());
+                    byte[] inputBytes = (terminalEditText.getText().toString() + '\n').getBytes(StandardCharsets.UTF_8);
+                    terminal.writeBytes(inputBytes);
+                    terminalEditText.setText("");
+                    handled = true;
                 }
                 return handled;
+            }
+        });
+
+        // handle buttons
+        ToggleButton btnCtrl = findViewById(R.id.btnCtrl);
+        btnCtrl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (btnCtrl.isChecked()) { // ON
+                    terminal.isCtrlChecked = true;
+                } else { // OFF
+                    terminal.isCtrlChecked = false;
+                }
             }
         });
     }
