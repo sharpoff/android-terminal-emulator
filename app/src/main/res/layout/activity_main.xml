@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -9,108 +9,120 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/terminal_out"
+
+    <com.example.terminal.TerminalView
+        android:id="@+id/terminal_out_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:textColor="#FFFFFF"
         android:layout_weight="1"
-        android:typeface="monospace"
-        android:textSize="12sp"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/tableLayout"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TableLayout
+        android:id="@+id/tableLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#222222">
+        android:layout_height="0dp"
+        android:background="#222222"
+        app:layout_constraintBottom_toTopOf="@+id/terminal_in">
+
         <TableRow>
+
             <ToggleButton
                 android:id="@+id/btnCtrl"
                 android:layout_width="90dp"
                 android:layout_height="48dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
                 android:backgroundTint="#ff444444"
                 android:minWidth="0dp"
                 android:minHeight="0dp"
-                android:layout_marginLeft="3dp"
-                android:layout_marginRight="3dp"
                 android:textColor="#FFFFFF"
-                android:textOn="Ctrl"
                 android:textOff="Ctrl"
+                android:textOn="Ctrl"
                 app:cornerRadius="5dp" />
+
             <ToggleButton
                 android:id="@+id/btnAlt"
                 android:layout_width="90dp"
                 android:layout_height="48dp"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:backgroundTint="#ff444444"
                 android:layout_marginLeft="3dp"
                 android:layout_marginRight="3dp"
+                android:backgroundTint="#ff444444"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
                 android:textColor="#FFFFFF"
-                android:textOn="Alt"
                 android:textOff="Alt"
+                android:textOn="Alt"
                 app:cornerRadius="5dp" />
+
             <Button
                 android:id="@+id/btnUp"
                 android:layout_width="90dp"
                 android:layout_height="48dp"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:backgroundTint="#ff444444"
                 android:layout_marginLeft="3dp"
                 android:layout_marginRight="3dp"
-                android:textColor="#FFFFFF"
+                android:backgroundTint="#ff444444"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
                 android:text="Up"
+                android:textColor="#FFFFFF"
                 app:cornerRadius="5dp" />
         </TableRow>
+
         <TableRow>
+
             <Button
                 android:id="@+id/btnTab"
                 android:layout_width="90dp"
                 android:layout_height="48dp"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:backgroundTint="#ff444444"
                 android:layout_marginLeft="3dp"
                 android:layout_marginRight="3dp"
-                android:textColor="#FFFFFF"
+                android:backgroundTint="#ff444444"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
                 android:text="Tab"
+                android:textColor="#FFFFFF"
                 app:cornerRadius="5dp" />
+
             <Button
                 android:id="@+id/btnLeft"
                 android:layout_width="90dp"
                 android:layout_height="48dp"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:backgroundTint="#ff444444"
                 android:layout_marginLeft="3dp"
                 android:layout_marginRight="3dp"
-                android:textColor="#FFFFFF"
+                android:backgroundTint="#ff444444"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
                 android:text="Left"
+                android:textColor="#FFFFFF"
                 app:cornerRadius="5dp" />
+
             <Button
                 android:id="@+id/btnDown"
                 android:layout_width="90dp"
                 android:layout_height="48dp"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:backgroundTint="#ff444444"
                 android:layout_marginLeft="3dp"
                 android:layout_marginRight="3dp"
-                android:textColor="#FFFFFF"
+                android:backgroundTint="#ff444444"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
                 android:text="Down"
+                android:textColor="#FFFFFF"
                 app:cornerRadius="5dp" />
+
             <Button
                 android:id="@+id/btnRight"
                 android:layout_width="90dp"
                 android:layout_height="48dp"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:backgroundTint="#ff444444"
                 android:layout_marginLeft="3dp"
                 android:layout_marginRight="3dp"
-                android:textColor="#FFFFFF"
+                android:backgroundTint="#ff444444"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
                 android:text="Right"
+                android:textColor="#FFFFFF"
                 app:cornerRadius="5dp" />
         </TableRow>
     </TableLayout>
@@ -118,12 +130,14 @@
     <EditText
         android:id="@+id/terminal_in"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:imeOptions="actionGo"
-        android:imeActionId="666"
+        android:layout_height="0dp"
         android:hint="command"
-        android:textColorHint="#FFFFFF"
+        android:imeActionId="666"
+        android:imeOptions="actionGo"
         android:inputType="text"
-        android:typeface="monospace" />
+        android:maxLines="1"
+        android:textColorHint="#FFFFFF"
+        android:typeface="monospace"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

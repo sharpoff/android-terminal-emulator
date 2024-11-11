@@ -4,7 +4,6 @@ import static com.example.terminal.JNI.close;
 import static com.example.terminal.JNI.createPty;
 
 import android.util.Log;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
@@ -18,7 +17,7 @@ import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 
 
-public class Terminal {
+public class TerminalEmulator {
     // Sequences codes
     private static final int NONE = 0;
     private static final int ESC = 1;
@@ -38,14 +37,14 @@ public class Terminal {
 
     private static final String LOG_TAG = "DebugTag";
     private FileDescriptor terminalFd = null;
-    private TextView terminalTextView = null;
+    private TerminalView terminalView = null;
 
-    Terminal(TextView textView) {
+    TerminalEmulator(TerminalView textView) {
         // creating pty
         int pid = createPty();
         Log.d(LOG_TAG, "PID: " + pid);
         terminalFd = createTerminalFd(pid);
-        terminalTextView = textView;
+        terminalView = textView;
 
         // thread that is reading from terminal file descriptor and adding it to terminalOut TextView
         new Thread() {
@@ -55,7 +54,6 @@ public class Terminal {
                     while(true) {
                         byte[] bytes = new byte[4096];
                         int read = inputStream.read(bytes);
-                        //Log.d("DebugTag", "Read bytes " + read);
                         if (read <= 0) {
                             Log.d(LOG_TAG, "Closing pid");
                             close(pid);
@@ -68,11 +66,8 @@ public class Terminal {
                             // TODO: after successful parse it can be removed, but for now that's fine
                             terminalBuffer = new String(bytes, StandardCharsets.UTF_8).replaceAll("\0", "");
 
-                            terminalTextView.append(terminalBuffer);
-                            column = terminalBuffer.length();
-                            row = terminalTextView.getLineCount();
+                            terminalView.appendText(terminalBuffer);
                             Log.d(LOG_TAG, "Message:\n" + new String(bytes, StandardCharsets.UTF_8).replaceAll("\0", ""));
-                            Log.d(LOG_TAG, "Row: " + row + ", Column: " + column);
                         }
                     }
                 } catch (IOException e) {}
