@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
             boolean handled = false;
             if (i == EditorInfo.IME_ACTION_GO) {
                 byte[] inputBytes;
+                // TODO: this looks ugly, handle that better
                 if (terminal.isCtrlChecked)
                     if (terminalEditText.getText().toString().equalsIgnoreCase("c"))
                         inputBytes = new byte[]{0x03};
@@ -64,20 +65,28 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        binding.btnAlt.setOnClickListener(view -> {
+            if (binding.btnAlt.isChecked()) { // ON
+                terminal.isAltChecked = true;
+            } else { // OFF
+                terminal.isAltChecked = false;
+            }
+        });
+
         binding.btnLeft.setOnClickListener(v -> {
-            terminalView.moveCursorLeft();
+            terminal.moveCursorLeft();
         });
 
         binding.btnRight.setOnClickListener(v -> {
-            terminalView.moveCursorRight();
+            terminal.moveCursorRight();
         });
 
         binding.btnDown.setOnClickListener(v -> {
-            terminalView.moveCursorDown();
+            terminal.moveCursorDown();
         });
 
         binding.btnUp.setOnClickListener(v -> {
-            terminalView.moveCursorUp();
+            terminal.moveCursorUp();
         });
     }
 }

@@ -5,132 +5,94 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    android:background="#111111"
     android:orientation="vertical"
     tools:context=".MainActivity">
-
 
     <com.example.terminal.TerminalView
         android:id="@+id/terminal_out_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        app:layout_constraintBottom_toTopOf="@+id/tableLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/tableLayout"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TableLayout
         android:id="@+id/tableLayout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:background="#222222"
         app:layout_constraintBottom_toTopOf="@+id/terminal_in">
 
         <TableRow>
-
-            <ToggleButton
+            <androidx.appcompat.widget.AppCompatToggleButton
                 android:id="@+id/btnCtrl"
-                android:layout_width="90dp"
-                android:layout_height="48dp"
-                android:layout_marginLeft="3dp"
-                android:layout_marginRight="3dp"
-                android:backgroundTint="#ff444444"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:textColor="#FFFFFF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/toggle_btn"
+                style="@style/button_style"
                 android:textOff="Ctrl"
-                android:textOn="Ctrl"
-                app:cornerRadius="5dp" />
+                android:textOn="Ctrl" />
 
-            <ToggleButton
-                android:id="@+id/btnAlt"
-                android:layout_width="90dp"
-                android:layout_height="48dp"
-                android:layout_marginLeft="3dp"
-                android:layout_marginRight="3dp"
-                android:backgroundTint="#ff444444"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:textColor="#FFFFFF"
-                android:textOff="Alt"
-                android:textOn="Alt"
-                app:cornerRadius="5dp" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnTab"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn"
+                style="@style/button_style"
+                android:text="Tab" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnUp"
-                android:layout_width="90dp"
-                android:layout_height="48dp"
-                android:layout_marginLeft="3dp"
-                android:layout_marginRight="3dp"
-                android:backgroundTint="#ff444444"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:text="Up"
-                android:textColor="#FFFFFF"
-                app:cornerRadius="5dp" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn"
+                style="@style/button_style"
+                android:text="Up" />
         </TableRow>
 
         <TableRow>
 
-            <Button
-                android:id="@+id/btnTab"
-                android:layout_width="90dp"
-                android:layout_height="48dp"
-                android:layout_marginLeft="3dp"
-                android:layout_marginRight="3dp"
-                android:backgroundTint="#ff444444"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:text="Tab"
-                android:textColor="#FFFFFF"
-                app:cornerRadius="5dp" />
+            <androidx.appcompat.widget.AppCompatToggleButton
+                android:id="@+id/btnAlt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/toggle_btn"
+                style="@style/button_style"
+                android:textOff="Alt"
+                android:textOn="Alt" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnLeft"
-                android:layout_width="90dp"
-                android:layout_height="48dp"
-                android:layout_marginLeft="3dp"
-                android:layout_marginRight="3dp"
-                android:backgroundTint="#ff444444"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:text="Left"
-                android:textColor="#FFFFFF"
-                app:cornerRadius="5dp" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn"
+                style="@style/button_style"
+                android:text="Left" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnDown"
-                android:layout_width="90dp"
-                android:layout_height="48dp"
-                android:layout_marginLeft="3dp"
-                android:layout_marginRight="3dp"
-                android:backgroundTint="#ff444444"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:text="Down"
-                android:textColor="#FFFFFF"
-                app:cornerRadius="5dp" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn"
+                style="@style/button_style"
+                android:text="Down" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnRight"
-                android:layout_width="90dp"
-                android:layout_height="48dp"
-                android:layout_marginLeft="3dp"
-                android:layout_marginRight="3dp"
-                android:backgroundTint="#ff444444"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:text="Right"
-                android:textColor="#FFFFFF"
-                app:cornerRadius="5dp" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn"
+                style="@style/button_style"
+                android:text="Right" />
         </TableRow>
     </TableLayout>
 
     <EditText
         android:id="@+id/terminal_in"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:hint="command"
         android:imeActionId="666"
         android:imeOptions="actionGo"

@@ -30,6 +30,7 @@ public class TerminalEmulator {
     private int[] sequencesArgs = new int[10];
 
     public boolean isCtrlChecked = false;
+    public boolean isAltChecked = false;
 
     private int row = 0;
     private int column = 0;
@@ -135,5 +136,21 @@ public class TerminalEmulator {
                 if (!continueSequence) currentSequence = NONE;
                 break;
         }
+    }
+
+    public void moveCursorLeft() {
+        terminalView.moveCursorLeft();
+    }
+
+    public void moveCursorRight() {
+        terminalView.moveCursorRight();
+    }
+
+    public void moveCursorUp() {
+        terminalView.moveCursorUp();
+    }
+
+    public void moveCursorDown() {
+        terminalView.moveCursorDown();
     }
 }
