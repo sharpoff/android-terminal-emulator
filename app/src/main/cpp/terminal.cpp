@@ -14,11 +14,12 @@ int throw_runtime_exception(JNIEnv *env, const std::string& message) {
 
 JNIEXPORT jint JNICALL
 Java_com_example_terminal_JNI_createPty(
-        JNIEnv *env, jclass clazz) {
+        JNIEnv *env, jclass clazz, jstring shell, jstring homePath) {
     int master;
     int pid = forkpty(&master, nullptr, nullptr, nullptr);
     if (pid == 0) { // slave
-        execvp("sh", nullptr);
+        setenv("HOME", env->GetStringUTFChars(homePath, nullptr), 1);
+        execvp(env->GetStringUTFChars(shell, nullptr), nullptr);
     } else if (pid > 0) { // master
         return master;
     } else {

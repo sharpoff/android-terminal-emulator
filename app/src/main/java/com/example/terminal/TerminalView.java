@@ -13,19 +13,18 @@ import android.view.View;
 import android.view.inputmethod.BaseInputConnection;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
-import android.widget.OverScroller;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.Arrays;
+
 public class TerminalView extends View {
-    private static final float LINE_SPACING = 0.0f;
+    private static final int OUTPUT_BUFFER_SIZE = 5000;
     private Paint paint;
     private GestureDetector gestureDetector;
-    private OverScroller scroller;
-    private TerminalEmulator terminal;
 
-    private String outputBuffer = "";
+    private String outputBuffer[] = new String[OUTPUT_BUFFER_SIZE];
 
     public int windowWidth;
     public int windowHeight;
@@ -36,9 +35,10 @@ public class TerminalView extends View {
     private int rows = 0;
 
     private int scrolled = 1;
+    private float scrollRemainder = 0.0f;
 
-    private int maxRows;
-    private int maxColumns;
+    private int maxRows = 49;
+    private int maxColumns = 56;
 
     public float characterWidth;
     public float characterHeight;
@@ -60,16 +60,10 @@ public class TerminalView extends View {
         int lineRow = scrolled;
 
         // TODO: i guess this could be done better
-        for (String line: outputBuffer.split("\n")) {
-            // break line into equalStrings of size "maxColumns"
-            for (String equalStr : line.split("(?<=\\G.{" + maxColumns + "})")) {
-                canvas.drawText(equalStr, 0.0f, lineRow*characterHeight, paint);
-                lineRow += 1;
-            }
+        for (String line: outputBuffer) {
+            canvas.drawText(line == null ? "" : line, 0.0f, lineRow*characterHeight, paint);
+            lineRow += 1;
         }
-        rows = lineRow;
-        Log.d("DebugTag", String.valueOf(rows));
-
         // draw cursor
         canvas.drawRect(characterWidth*cursorCol, characterHeight*cursorRow,
                 characterWidth+characterWidth*cursorCol, characterHeight+characterHeight*cursorRow, paint);
@@ -104,54 +98,69 @@ public class TerminalView extends View {
 
         characterHeight = (int)Math.ceil(paint.getFontSpacing());
         characterWidth = paint.measureText("@", 0, 1);
-    }
-
-    public TerminalView(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-        init();
 
         gestureDetector = new GestureDetector(getContext(), new GestureListener() {
             @Override
-            public boolean onDown(@NonNull MotionEvent e) {
-                scroller.forceFinished(true);
-                Log.d("DebugTag", "DOO SMTHING");
-                return true;
-            }
-
-//            @Override
-//            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-//                double SCALE = 0.25;
-//                scroller.fling(0, 0, 0, -(int) (velocityY * SCALE),0, 0, 100, 0);
-//                postInvalidate();
-//
-//                return true;
-//            }
-
-            @Override
             public boolean onScroll(@Nullable MotionEvent e1, @NonNull MotionEvent e2, float distanceX, float distanceY) {
-                Log.d("DebugTag", "DOO SCROOOOLL");
-                int deltaRows = (int) (distanceY / characterHeight);
-                scrollViewVertically(deltaRows);
+                distanceY += scrollRemainder;
+                int scrollCount = (int)(distanceY / characterHeight);
+                scrollRemainder = distanceY - scrollCount * characterHeight;
+                scroll(scrollCount);
                 return true;
             }
         });
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-//        gestureDetector.onTouchEvent(event); // crash on tihs
-        return true;
+    public void scroll(int rowsCount) {
+        rowsCount = -rowsCount;
+        Log.d("TouchTag", "how much to scroll: " + rowsCount);
+        boolean bottom = rowsCount < 0;
+        if (bottom) {
+            scrolled += rowsCount;
+        } else {
+            if ((scrolled + rowsCount) <= 1)
+                scrolled += rowsCount;
+        }
+        Log.d("TouchTag", "Scrolled: " + String.valueOf(scrolled));
+        Log.d("TouchTag", "rows: " + rows);
+        invalidate();
     }
 
-    private void scrollViewVertically(int rows) {
-        boolean isUp = rows < 0;
-        scrolled = Math.min(0, Math.max(-2000, scrolled + (isUp ? -1 : 1)));
-        invalidate();
+    public TerminalView(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+        init();
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return gestureDetector.onTouchEvent(event);
     }
 
     public void appendText(String s) {
-        outputBuffer += s;
+        int rowCharCount = 0;
+        for (int i = 0; i < s.length(); i++) {
+            rowCharCount++;
+            if (s.charAt(i) == '\n' || rowCharCount > maxColumns) {
+                rows++;
+                rowCharCount = 0;
+                continue;
+            }
+
+            if (outputBuffer[rows] == null) {
+                outputBuffer[rows] = String.valueOf(s.charAt(i));
+            } else {
+                outputBuffer[rows] += String.valueOf(s.charAt(i));
+            }
+        }
         invalidate();
+
+        // TODO: implement scroll when hit borders of window
+//        if (rows > maxRows) {
+//            scroll(rows - maxRows);
+//            cursorRow = rows;
+//        } else {
+//            cursorRow = rows;
+//        }
     }
 
     public void moveCursorLeft() {

@@ -32,17 +32,15 @@ public class TerminalEmulator {
     public boolean isCtrlChecked = false;
     public boolean isAltChecked = false;
 
-    private int row = 0;
-    private int column = 0;
     private String terminalBuffer = "";
 
-    private static final String LOG_TAG = "DebugTag";
+    private static final String LOG_TAG = "TerminalEmulator";
     private FileDescriptor terminalFd = null;
     private TerminalView terminalView = null;
 
-    TerminalEmulator(TerminalView textView) {
+    TerminalEmulator(TerminalView textView, String homePath) {
         // creating pty
-        int pid = createPty();
+        int pid = createPty("sh", homePath);
         Log.d(LOG_TAG, "PID: " + pid);
         terminalFd = createTerminalFd(pid);
         terminalView = textView;

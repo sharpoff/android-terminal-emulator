@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
         TerminalView terminalView = binding.terminalOutView;
         EditText terminalEditText = binding.terminalIn;
-        terminal = new TerminalEmulator(terminalView);
+        terminal = new TerminalEmulator(terminalView, getFilesDir().toString());
 
         terminalEditText.setOnEditorActionListener((textView, i, keyEvent) -> {
             boolean handled = false;
@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
                 terminal.isCtrlChecked = false;
             }
         });
+
 
         binding.btnAlt.setOnClickListener(view -> {
             if (binding.btnAlt.isChecked()) { // ON
