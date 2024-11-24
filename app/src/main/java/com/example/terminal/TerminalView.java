@@ -24,7 +24,7 @@ public class TerminalView extends View {
     private Paint paint;
     private GestureDetector gestureDetector;
 
-    private String outputBuffer[] = new String[OUTPUT_BUFFER_SIZE];
+    public String outputBuffer[] = new String[OUTPUT_BUFFER_SIZE];
 
     public int windowWidth;
     public int windowHeight;
@@ -108,6 +108,12 @@ public class TerminalView extends View {
                 scroll(scrollCount);
                 return true;
             }
+
+            @Override
+            public boolean onSingleTapUp(@NonNull MotionEvent e) {
+                // TODO: show up keyboard
+                return true;
+            }
         });
     }
 
@@ -188,5 +194,13 @@ public class TerminalView extends View {
             cursorRow += 1;
             invalidate();
         }
+    }
+
+    public void clearDisplay() {
+        outputBuffer = new String[OUTPUT_BUFFER_SIZE];
+        cursorRow = 0;
+        cursorCol = 0;
+        rows = 0;
+        scrolled = 1;
     }
 }

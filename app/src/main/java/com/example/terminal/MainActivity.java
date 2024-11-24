@@ -74,6 +74,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        binding.btnTab.setOnClickListener(v -> {
+            // tab
+        });
+
         binding.btnLeft.setOnClickListener(v -> {
             terminal.moveCursorLeft();
         });
