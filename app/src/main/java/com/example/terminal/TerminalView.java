@@ -64,7 +64,8 @@ public class TerminalView extends View {
             canvas.drawText(line == null ? "" : line, 0.0f, lineRow*characterHeight, paint);
             lineRow += 1;
         }
-        // draw cursor
+//         draw cursor
+        Log.i("CursorTag", "row: " + cursorRow + ", column: " + cursorCol);
         canvas.drawRect(characterWidth*cursorCol, characterHeight*cursorRow,
                 characterWidth+characterWidth*cursorCol, characterHeight+characterHeight*cursorRow, paint);
     }
@@ -119,16 +120,19 @@ public class TerminalView extends View {
 
     public void scroll(int rowsCount) {
         rowsCount = -rowsCount;
-        Log.d("TouchTag", "how much to scroll: " + rowsCount);
         boolean bottom = rowsCount < 0;
         if (bottom) {
             scrolled += rowsCount;
+            cursorRow += rowsCount;
         } else {
-            if ((scrolled + rowsCount) <= 1)
+            if ((scrolled + rowsCount) <= 1) {
                 scrolled += rowsCount;
+                cursorRow += rowsCount;
+            }
         }
         Log.d("TouchTag", "Scrolled: " + String.valueOf(scrolled));
         Log.d("TouchTag", "rows: " + rows);
+        Log.d("TouchTag", "cursorRow: " + cursorRow);
         invalidate();
     }
 
@@ -158,15 +162,15 @@ public class TerminalView extends View {
                 outputBuffer[rows] += String.valueOf(s.charAt(i));
             }
         }
+        cursorCol = rowCharCount;
         invalidate();
 
-        // TODO: implement scroll when hit borders of window
-//        if (rows > maxRows) {
-//            scroll(rows - maxRows);
-//            cursorRow = rows;
-//        } else {
-//            cursorRow = rows;
-//        }
+        if (rows > maxRows) {
+            scroll(rows + scrolled - maxRows);
+            cursorRow = rows + scrolled - 1;
+        } else {
+            cursorRow = rows + scrolled - 1;
+        }
     }
 
     public void moveCursorLeft() {

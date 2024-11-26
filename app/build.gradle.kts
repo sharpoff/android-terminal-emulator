@@ -4,12 +4,12 @@ plugins {
 
 android {
     namespace = "com.example.terminal"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.terminal"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -44,6 +44,7 @@ android {
             version = "3.22.1"
         }
     }
+    ndkVersion = "27.0.12077973"
 }
 
 dependencies {

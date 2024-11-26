@@ -79,19 +79,19 @@ public class MainActivity extends AppCompatActivity {
         });
 
         binding.btnLeft.setOnClickListener(v -> {
-            terminal.moveCursorLeft();
+//            terminal.moveCursorLeft();
         });
 
         binding.btnRight.setOnClickListener(v -> {
-            terminal.moveCursorRight();
+//            terminal.moveCursorRight();
         });
 
         binding.btnDown.setOnClickListener(v -> {
-            terminal.moveCursorDown();
+//            terminal.moveCursorDown();
         });
 
         binding.btnUp.setOnClickListener(v -> {
-            terminal.moveCursorUp();
+//            terminal.moveCursorUp();
         });
     }
 }
