@@ -1,6 +1,6 @@
 Features:
 * custom view, that could output text, show cursor and have basic scrolling
-* execute some basic commands, that are not escape codes intensive (e.g. vi/vim)
+* execute some basic commands, that are not escape codes intensive (e.g. not vi/vim)
 * cursor is simulated and moves only to the end of line for now
 * internet support (ssh, ping etc.)
 * ^C (ctrl+C) to cancel commands
