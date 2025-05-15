@@ -4,8 +4,8 @@ https://github.com/user-attachments/assets/7c182197-a7ef-425e-b5ed-74786e47b990
 
 ## Features:
 
-* custom view, that could output text, show cursor and have basic scrolling
-* execute some basic commands, that are not escape codes intensive (e.g. not vi/vim)
+* custom view that can output text, show cursor and have basic scrolling
+* execute some basic commands that are not escape code intensive (e.g. not vi/vim)
 * cursor is simulated and moves only to the end of line for now
 * internet support (ssh, ping etc.)
 * ^C (ctrl+C) to cancel commands
